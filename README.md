@@ -12,9 +12,8 @@ Total Coverage: <b>99.39%</b>
 
 ## Inputs
 
-##### `github-token` (**Required**)
-Github token used for posting the comment. To use the key provided by the GitHub
-action runner, use `${{ secrets.GITHUB_TOKEN }}`.
+##### `github-token` (**Optional**)
+Github token used for posting the comment. Defaults to `${{ github.token }}`.
 
 ##### `pr-number` (**Required**)
 Number of the Pull Request.
@@ -40,7 +39,6 @@ Filename to output the html to. If set the action will not comment on the PR.
 ```yml
 uses: Nef10/lcov-reporter-action@v0.3.0
 with:
-  github-token: ${{ secrets.GITHUB_TOKEN }}
   lcov-file: lcov.info
   pr-number: ${{ env.pr_number }}
 ```
