@@ -39,7 +39,7 @@ Filename to output the html to. If set the action will not comment on the PR.
 ```yml
 uses: Nef10/lcov-reporter-action@v0.3.0
 with:
-  lcov-file: ./coverage/lcov.info
+  lcov-file: lcov.info
   pr-number: ${{ env.pr_number }}
 ```
 
