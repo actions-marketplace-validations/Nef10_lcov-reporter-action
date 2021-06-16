@@ -1,7 +1,7 @@
-import { tabulate } from "./tabulate"
-import { th, tr, td, table, tbody, a, b, span, fragment } from "./html"
+import { tabulate } from "./tabulate";
+import { th, tr, td, table, tbody, a, b, span, fragment } from "./html";
 
-test("tabulate should generate a correct table", function() {
+test("tabulate should generate a correct table", function () {
 	const data = [
 		{
 			file: "/files/project/index.js",
@@ -113,13 +113,13 @@ test("tabulate should generate a correct table", function() {
 				],
 			},
 		},
-	]
+	];
 
 	const options = {
 		repository: "example/foo",
 		commit: "2e15bee6fe0df5003389aa5ec894ec0fea2d874a",
 		prefix: "/files/project/",
-	}
+	};
 
 	const html = table(
 		tbody(
@@ -129,7 +129,7 @@ test("tabulate should generate a correct table", function() {
 				th("Branches"),
 				th("Funcs"),
 				th("Lines"),
-				th("Uncovered Lines"),
+				th("Uncovered Lines")
 			),
 			tr(
 				td(
@@ -137,14 +137,14 @@ test("tabulate should generate a correct table", function() {
 						{
 							href: `https://github.com/${options.repository}/blob/${options.commit}/index.js`,
 						},
-						"index.js",
-					),
+						"index.js"
+					)
 				),
 				td("100%"),
 				td("N/A"),
 				td("100%"),
 				td("N/A"),
-				td(),
+				td()
 			),
 			tr(td({ colspan: 6 }, b("src"))),
 			tr(
@@ -154,8 +154,8 @@ test("tabulate should generate a correct table", function() {
 						{
 							href: `https://github.com/${options.repository}/blob/${options.commit}/src/foo.js`,
 						},
-						"foo.js",
-					),
+						"foo.js"
+					)
 				),
 				td(b("89.66%")),
 				td("100%"),
@@ -166,9 +166,9 @@ test("tabulate should generate a correct table", function() {
 						{
 							href: `https://github.com/${options.repository}/blob/${options.commit}/src/foo.js#L37`,
 						},
-						37,
-					),
-				),
+						37
+					)
+				)
 			),
 			tr(td({ colspan: 6 }, b("src/bar"))),
 			tr(
@@ -178,8 +178,8 @@ test("tabulate should generate a correct table", function() {
 						{
 							href: `https://github.com/${options.repository}/blob/${options.commit}/src/bar/baz.js`,
 						},
-						"baz.js",
-					),
+						"baz.js"
+					)
 				),
 				td(b("53.85%")),
 				td("N/A"),
@@ -190,18 +190,101 @@ test("tabulate should generate a correct table", function() {
 						{
 							href: `https://github.com/${options.repository}/blob/${options.commit}/src/bar/baz.js#L20-L21`,
 						},
-						'20&ndash;21',
+						"20&ndash;21"
 					),
-					', ',
+					", ",
 					a(
 						{
 							href: `https://github.com/${options.repository}/blob/${options.commit}/src/bar/baz.js#L27`,
 						},
-						'27',
-					),
-				),
+						"27"
+					)
+				)
+			)
+		)
+	);
+
+	const htmlWithoutBranch = table(
+		tbody(
+			tr(
+				th("File"),
+				th("Stmts"),
+				th("Funcs"),
+				th("Lines"),
+				th("Uncovered Lines")
 			),
-		),
-	)
-	expect(tabulate(data, options)).toBe(html)
-})
+			tr(
+				td(
+					a(
+						{
+							href: `https://github.com/${options.repository}/blob/${options.commit}/index.js`,
+						},
+						"index.js"
+					)
+				),
+				td("100%"),
+				td("100%"),
+				td("N/A"),
+				td()
+			),
+			tr(td({ colspan: 5 }, b("src"))),
+			tr(
+				td(
+					"&nbsp; &nbsp;",
+					a(
+						{
+							href: `https://github.com/${options.repository}/blob/${options.commit}/src/foo.js`,
+						},
+						"foo.js"
+					)
+				),
+				td(b("89.66%")),
+				td(b("66.67%")),
+				td(b("91.30%")),
+				td(
+					a(
+						{
+							href: `https://github.com/${options.repository}/blob/${options.commit}/src/foo.js#L37`,
+						},
+						37
+					)
+				)
+			),
+			tr(td({ colspan: 5 }, b("src/bar"))),
+			tr(
+				td(
+					"&nbsp; &nbsp;",
+					a(
+						{
+							href: `https://github.com/${options.repository}/blob/${options.commit}/src/bar/baz.js`,
+						},
+						"baz.js"
+					)
+				),
+				td(b("53.85%")),
+				td(b("66.67%")),
+				td(b("50%")),
+				td(
+					a(
+						{
+							href: `https://github.com/${options.repository}/blob/${options.commit}/src/bar/baz.js#L20-L21`,
+						},
+						"20&ndash;21"
+					),
+					", ",
+					a(
+						{
+							href: `https://github.com/${options.repository}/blob/${options.commit}/src/bar/baz.js#L27`,
+						},
+						"27"
+					)
+				)
+			)
+		)
+	);
+
+	expect(tabulate(data, options)).toBe(html);
+	expect(tabulate(data, { ...options, hide_branch_coverage: true })).toBe(
+		htmlWithoutBranch
+	);
+});
